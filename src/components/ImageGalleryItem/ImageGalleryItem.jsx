@@ -1,7 +1,6 @@
 
 import css from './ImageGalleryItem.module.css'
-
-
+import PropTypes from 'prop-types';
 export const ImageGalleryItem = ({ item, imgClick }) => {
     return (
         <li className={css.ImageGalleryItem}>
@@ -9,6 +8,9 @@ export const ImageGalleryItem = ({ item, imgClick }) => {
         </li>
     )
 }
-
+ImageGalleryItem.propTypes = {
+    item: PropTypes.object,
+    imgClick: PropTypes.func
+}
 
 

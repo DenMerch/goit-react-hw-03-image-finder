@@ -1,6 +1,6 @@
 import css from './Modal.module.css'
 import { Component } from 'react'
-
+import PropTypes from 'prop-types';
 export class Modal extends Component {
   state = {}
 
@@ -29,12 +29,12 @@ export class Modal extends Component {
           <img src={url} alt="" />
         </div>
       </div>
-
-
     )
   }
 }
-
+Modal.propTypes = {
+  url: PropTypes.string
+}
 
 
 
