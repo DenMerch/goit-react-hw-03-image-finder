@@ -14,22 +14,23 @@ const INITIAL_STATE = {
   isModal: false,
   imgURL: '',
   search: '',
+  showBTN: '',
 }
-let showBTN = ''
+
 export class App extends Component {
   state = {
     ...INITIAL_STATE
   }
 
   componentDidUpdate(_, prevState) {
-    if (prevState.search !== this.state.search) this.setState({ page: 1, gallery: [] })
+    // if (prevState.search !== this.state.search) this.setState({ page: 1, gallery: [] })
     if (prevState.search !== this.state.search || prevState.page !== this.state.page) {
       this.setState({ isLoading: true })
       fetchData(this.state.search, this.state.page).then((data => {
         let totalHits = data.data.totalHits;
         if (totalHits !== 0) {
           const hits = data.data.hits
-          showBTN = this.state.page < Math.ceil(totalHits / 12)
+          this.showBTN = this.state.page < Math.ceil(totalHits / 12)
           this.setState((prevState) => ({ gallery: [...prevState.gallery, ...hits] }))
         }
         else return Promise.reject(`We can't find foto ${this.state.search}`)
@@ -41,7 +42,10 @@ export class App extends Component {
     }
   }
   handleSubmit = ({ search }) => {
-    this.setState({ search })
+    if (search !== this.state.search) {
+      this.setState({ search, page: 1, gallery: [], showBTN: false })
+    }
+    return
   };
   handleImgClick = (e) => {
     this.setState({ isModal: !this.state.isModal, imgURL: e.target.dataset.set })
@@ -68,7 +72,7 @@ export class App extends Component {
         <Searchbar handleSubmit={this.handleSubmit} />
         <ImageGallery galleryImg={gallery} imgClick={this.handleImgClick} />
         {isLoading && <Loader />}
-        {showBTN && <Button btnClick={this.handleBtnClick} />}
+        {this.showBTN && <Button btnClick={this.handleBtnClick} />}
         {isModal && <Modal url={this.state.imgURL} closeModal={this.handleCloseModal} />}
       </div >
     );
