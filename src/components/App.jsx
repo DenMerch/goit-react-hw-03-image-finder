@@ -27,7 +27,10 @@ export class App extends Component {
         let totalHits = data.data.totalHits;
         if (totalHits !== 0) {
           const hits = data.data.hits;
-          this.setState((prevState) => ({ gallery: [...prevState.gallery, ...hits], showBTN: this.state.page < Math.ceil(totalHits / 12) }))
+          this.setState((prevState) => ({
+            gallery: [...prevState.gallery, ...hits],
+            showBTN: this.state.page < Math.ceil(totalHits / 12)
+          }))
         }
         else return Promise.reject(`We can't find foto ${this.state.search}`)
       }))
